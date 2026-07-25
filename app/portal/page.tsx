@@ -1,109 +1,66 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { IEEELogo } from '@/components/ieee-logo';
-import { Mail, Lock, ArrowRight } from 'lucide-react';
+import { MembershipChecker } from '@/components/membership-checker';
+import { LogIn, ShieldCheck, UserCheck, Key, ArrowRight } from 'lucide-react';
 
 export default function PortalPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const handlePortalSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-      if (email === 'webdev.ieeemusb@gmail.com' && password === 'ItripsMUSB2026') {
-        router.push('/admin');
-      } else {
-        router.push('/dashboard');
-      }
-    }, 600);
-  };
-
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-grid-pattern">
-      <div className="max-w-md w-full glass-panel p-8 rounded-3xl space-y-6 shadow-xl border border-slate-200 dark:border-slate-800">
-        {/* Header */}
-        <div className="text-center space-y-2">
-          <Link href="/" className="inline-block">
-            <IEEELogo size="lg" showText={false} />
-          </Link>
-          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            IEEE-MUSB Portal
-          </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            Sign in to access Member Resources &amp; Officer Management Workspace
-          </p>
+    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+      {/* Top Banner Header */}
+      <div className="text-center space-y-3 max-w-2xl mx-auto">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-[#00629B]/10 text-[#00629B] dark:text-blue-400 border border-[#00629B]/20">
+          <ShieldCheck className="w-4 h-4" />
+          <span>IEEE-MUSB Access Gateway</span>
         </div>
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          Member Portal &amp; Verification Hub
+        </h1>
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+          Verify your active membership status or sign in to your authenticated IEEE-MUSB dashboard.
+        </p>
+      </div>
 
-        {/* Login Form */}
-        <form onSubmit={handlePortalSubmit} className="space-y-4">
-          <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-              Email Address
-            </label>
-            <div className="relative">
-              <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#00629B]"
-                placeholder="ieeemapuasb@gmail.com"
-              />
-            </div>
+      {/* Main Grid: Membership Checker + Quick Sign In */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        {/* Left Column: Public Student Membership Checker */}
+        <MembershipChecker />
+
+        {/* Right Column: Portal Sign-In Options */}
+        <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-6 shadow-xl">
+          <div className="space-y-2">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+              <Key className="w-6 h-6 text-[#00629B] dark:text-blue-400" />
+              <span>Portal Sign In</span>
+            </h2>
+            <p className="text-xs text-slate-600 dark:text-slate-400">
+              Access your digital membership card, event check-in QR code, and executive admin workspace.
+            </p>
           </div>
 
-          <div className="space-y-1">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                Password
-              </label>
-              <a href="#" className="text-[11px] text-[#00629B] dark:text-blue-400 hover:underline">
-                Forgot password?
-              </a>
-            </div>
-            <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••••••"
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#00629B]"
-              />
+          <div className="space-y-3">
+            <Link
+              href="/login"
+              className="w-full py-3.5 px-6 rounded-2xl font-bold text-xs btn-ieee-primary flex items-center justify-between group shadow-md"
+            >
+              <div className="flex items-center gap-3">
+                <LogIn className="w-4 h-4" />
+                <span>Sign In to Member &amp; Admin Dashboard</span>
+              </div>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 space-y-2">
+              <div className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                <UserCheck className="w-4 h-4 text-emerald-500" />
+                <span>Superadmin Credentials</span>
+              </div>
+              <p className="text-[11px] leading-relaxed">
+                Superadmin (Justin Andre De Leon) can access <code className="text-blue-500 font-mono">/admin</code> by logging in with official credentials. Fields are blank by default for security.
+              </p>
             </div>
           </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 rounded-xl text-xs font-bold uppercase tracking-wider btn-ieee-primary flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <span>Verifying...</span>
-            ) : (
-              <>
-                <span>Sign In to Portal</span>
-                <ArrowRight className="w-4 h-4" />
-              </>
-            )}
-          </button>
-        </form>
-
-        <div className="pt-2 text-center border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500">
-          Not an officer yet?{' '}
-          <Link href="/about" className="text-[#00629B] dark:text-blue-400 font-medium hover:underline">
-            Learn how to join IEEE-MUSB
-          </Link>
         </div>
       </div>
     </div>
