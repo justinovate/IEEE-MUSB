@@ -16,6 +16,7 @@ import {
   Pin,
   Search,
   ExternalLink,
+  CheckCircle2,
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -37,29 +38,44 @@ export default function HomePage() {
 
   // Event Countdown state
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [isConcluded, setIsConcluded] = useState(false);
 
   useEffect(() => {
     if (!featuredEvent) return;
 
-    const interval = setInterval(() => {
+    const calculateRemainingTime = () => {
       const target = new Date(featuredEvent.targetDate).getTime();
-      const now = new Date().getTime();
+      const now = Date.now();
       const diff = target - now;
 
-      if (diff > 0) {
+      if (diff <= 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        setIsConcluded(true);
+        return false; // Stop timer
+      } else {
         setTimeLeft({
           days: Math.floor(diff / (1000 * 60 * 60 * 24)),
           hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
           minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((diff % (1000 * 60)) / 1000),
         });
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        setIsConcluded(false);
+        return true; // Continue timer
+      }
+    };
+
+    const isRunning = calculateRemainingTime();
+    if (!isRunning) return; // Do not start interval if event is already concluded
+
+    const interval = setInterval(() => {
+      const shouldContinue = calculateRemainingTime();
+      if (!shouldContinue) {
+        clearInterval(interval);
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [featuredEvent]);
+  }, [featuredEvent?.targetDate]);
 
   return (
     <div className="space-y-16 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -110,7 +126,7 @@ export default function HomePage() {
             <div className="lg:col-span-2 space-y-3">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                 <Calendar className="w-3.5 h-3.5" />
-                <span>UPCOMING FEATURED WORKSHOP</span>
+                <span>{isConcluded ? 'FEATURED EVENT' : 'UPCOMING FEATURED WORKSHOP'}</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
                 {featuredEvent.title}
@@ -132,32 +148,46 @@ export default function HomePage() {
 
             {/* Live Countdown Timer Grid */}
             <div className="bg-slate-950/80 p-6 rounded-2xl border border-slate-800 text-center space-y-4">
-              <div className="text-xs font-mono font-bold text-slate-400 uppercase tracking-widest">
-                Event Starts In
+              <div className="text-xs font-mono font-bold uppercase tracking-widest text-slate-400">
+                {isConcluded ? 'Event Status' : 'Event Starts In'}
               </div>
-              <div className="grid grid-cols-4 gap-2 text-center font-mono">
-                <div className="p-2 bg-slate-900 rounded-xl border border-slate-800">
-                  <div className="text-2xl font-bold text-white">{timeLeft.days}</div>
-                  <div className="text-[9px] text-slate-400">DAYS</div>
+
+              {!isConcluded ? (
+                <div className="grid grid-cols-4 gap-2 text-center font-mono">
+                  <div className="p-2 bg-slate-900 rounded-xl border border-slate-800">
+                    <div className="text-2xl font-bold text-white">{timeLeft.days}</div>
+                    <div className="text-[9px] text-slate-400">DAYS</div>
+                  </div>
+                  <div className="p-2 bg-slate-900 rounded-xl border border-slate-800">
+                    <div className="text-2xl font-bold text-white">{timeLeft.hours}</div>
+                    <div className="text-[9px] text-slate-400">HRS</div>
+                  </div>
+                  <div className="p-2 bg-slate-900 rounded-xl border border-slate-800">
+                    <div className="text-2xl font-bold text-white">{timeLeft.minutes}</div>
+                    <div className="text-[9px] text-slate-400">MINS</div>
+                  </div>
+                  <div className="p-2 bg-slate-900 rounded-xl border border-slate-800">
+                    <div className="text-2xl font-bold text-emerald-400">{timeLeft.seconds}</div>
+                    <div className="text-[9px] text-slate-400">SECS</div>
+                  </div>
                 </div>
-                <div className="p-2 bg-slate-900 rounded-xl border border-slate-800">
-                  <div className="text-2xl font-bold text-white">{timeLeft.hours}</div>
-                  <div className="text-[9px] text-slate-400">HRS</div>
+              ) : (
+                <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center space-y-1">
+                  <div className="inline-flex items-center gap-1.5 text-emerald-400 font-mono font-bold text-xs">
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>EVENT CONCLUDED</span>
+                  </div>
+                  <div className="text-[11px] text-slate-400">
+                    Registration for this event has closed.
+                  </div>
                 </div>
-                <div className="p-2 bg-slate-900 rounded-xl border border-slate-800">
-                  <div className="text-2xl font-bold text-white">{timeLeft.minutes}</div>
-                  <div className="text-[9px] text-slate-400">MINS</div>
-                </div>
-                <div className="p-2 bg-slate-900 rounded-xl border border-slate-800">
-                  <div className="text-2xl font-bold text-emerald-400">{timeLeft.seconds}</div>
-                  <div className="text-[9px] text-slate-400">SECS</div>
-                </div>
-              </div>
+              )}
+
               <Link
                 href="/events"
                 className="w-full py-2.5 rounded-xl text-xs font-bold btn-ieee-primary block"
               >
-                Register / RSVP Event
+                {isConcluded ? 'Browse Upcoming Events' : 'Register / RSVP Event'}
               </Link>
             </div>
           </div>
