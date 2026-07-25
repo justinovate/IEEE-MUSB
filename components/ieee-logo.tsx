@@ -15,15 +15,15 @@ export function IEEELogo({
   variant = 'auto',
 }: IEEELogoProps) {
   const sizePixelMap = {
-    sm: 36,
-    md: 48,
-    lg: 64,
-    xl: 96,
+    sm: 34,
+    md: 44,
+    lg: 56,
+    xl: 80,
   };
 
   const px = sizePixelMap[size];
 
-  // Text color based on variant
+  // Text colors
   const titleColor =
     variant === 'dark'
       ? 'text-white'
@@ -39,12 +39,12 @@ export function IEEELogo({
       : 'text-[#00629B] dark:text-blue-300';
 
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
-      {/* Authentic Official IEEE-MUSB Logo */}
-      <div className="relative flex items-center justify-center rounded-full bg-white border border-slate-300 p-0.5 shadow-md shrink-0 overflow-hidden">
+    <div className={`flex items-center gap-2.5 whitespace-nowrap select-none ${className}`}>
+      {/* Official IEEE-MUSB Seal Emblem */}
+      <div className="relative flex items-center justify-center rounded-full bg-white border border-slate-200 p-0.5 shadow-sm shrink-0 overflow-hidden">
         <Image
           src="/ieee-musb-logo.jpg"
-          alt="IEEE - Mapúa University Student Branch Official Logo"
+          alt="IEEE - Mapúa University Student Branch Logo"
           width={px}
           height={px}
           className="object-contain rounded-full"
@@ -53,17 +53,16 @@ export function IEEELogo({
       </div>
 
       {showText && (
-        <div className="flex flex-col leading-none">
-          <div className="flex items-center gap-1.5">
-            <span className={`font-extrabold tracking-wider text-base sm:text-lg font-sans ${titleColor}`}>
-              IEEE
+        <div className="flex flex-col justify-center whitespace-nowrap">
+          <div className="flex items-center gap-2">
+            <span className={`font-extrabold tracking-tight text-base sm:text-lg font-sans ${titleColor}`}>
+              IEEE-MUSB
             </span>
-            <span className="h-3 w-[1px] bg-slate-400 dark:bg-slate-700" />
-            <span className="text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded badge-mapua tracking-wide uppercase">
-              MUSB EST. 2002
+            <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 whitespace-nowrap">
+              EST. 2002
             </span>
           </div>
-          <span className={`text-[10px] font-bold tracking-tight mt-0.5 ${subtitleColor}`}>
+          <span className={`text-[11px] font-bold tracking-tight ${subtitleColor} whitespace-nowrap`}>
             Mapúa University Student Branch
           </span>
         </div>
