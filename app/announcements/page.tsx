@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import { useData } from '@/components/data-provider';
-import { Bell, Search, Pin, Calendar, User, ArrowRight, X } from 'lucide-react';
+import { Bell, Search, Pin, Calendar, User, ArrowRight, X, Sparkles } from 'lucide-react';
 import { AnnouncementData } from '@/data/announcements';
+import { AISummarizer } from '@/components/ai/summarizer';
 
 export default function PublicAnnouncementsPage() {
   const { announcements } = useData();
@@ -31,7 +32,7 @@ export default function PublicAnnouncementsPage() {
           <span>IEEE-MUSB Announcement Feed</span>
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-          Official notices, workshop registration deadlines, STEP events, and Mapúa EECE branch updates.
+          Official notices, workshop registration deadlines, STEP events, and Mapúa branch updates.
         </p>
       </div>
 
@@ -70,37 +71,66 @@ export default function PublicAnnouncementsPage() {
         {filtered.map((ann) => (
           <div
             key={ann.id}
-            onClick={() => setSelectedAnn(ann)}
-            className="glass-panel p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 cursor-pointer hover:border-[#00629B] transition-all relative group shadow-md"
+            className="glass-panel rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 space-y-3 relative group shadow-md flex flex-col justify-between"
           >
-            {ann.isPinned && (
-              <div className="absolute top-4 right-4 flex items-center gap-1 text-[10px] font-bold font-mono text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
-                <Pin className="w-3 h-3" />
-                <span>PINNED</span>
+            {/* Banner Cover Image */}
+            {ann.imageUrl && (
+              <div className="h-44 w-full bg-slate-900 relative overflow-hidden cursor-pointer" onClick={() => setSelectedAnn(ann)}>
+                <img
+                  src={ann.imageUrl}
+                  alt={ann.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                {ann.isPinned && (
+                  <div className="absolute top-3 right-3 flex items-center gap-1 text-[10px] font-bold font-mono text-amber-300 bg-black/70 px-2 py-0.5 rounded-md border border-amber-500/40 backdrop-blur-sm">
+                    <Pin className="w-3 h-3 text-amber-400" />
+                    <span>PINNED</span>
+                  </div>
+                )}
+                <span className="absolute bottom-3 left-3 badge-mapua px-2.5 py-0.5 rounded text-[10px] font-mono font-bold">
+                  {ann.category}
+                </span>
               </div>
             )}
 
-            <span className="badge-mapua px-2.5 py-0.5 rounded text-[10px] font-mono font-bold inline-block">
-              {ann.category}
-            </span>
+            <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
+              <div className="space-y-2">
+                {!ann.imageUrl && (
+                  <div className="flex items-center justify-between">
+                    <span className="badge-mapua px-2.5 py-0.5 rounded text-[10px] font-mono font-bold">
+                      {ann.category}
+                    </span>
+                    {ann.isPinned && (
+                      <div className="flex items-center gap-1 text-[10px] font-bold font-mono text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
+                        <Pin className="w-3 h-3" />
+                        <span>PINNED</span>
+                      </div>
+                    )}
+                  </div>
+                )}
 
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#00629B] dark:group-hover:text-blue-400 transition-colors">
-              {ann.title}
-            </h3>
+                <h3
+                  onClick={() => setSelectedAnn(ann)}
+                  className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#00629B] dark:group-hover:text-blue-400 transition-colors cursor-pointer"
+                >
+                  {ann.title}
+                </h3>
 
-            <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed">
-              {ann.content}
-            </p>
+                <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed">
+                  {ann.content}
+                </p>
+              </div>
 
-            <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
-              <span className="flex items-center gap-1">
-                <User className="w-3 h-3 text-blue-400" />
-                {ann.author}
-              </span>
-              <span className="flex items-center gap-1">
-                <Calendar className="w-3 h-3" />
-                {ann.date}
-              </span>
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <div className="text-[11px] font-mono text-slate-400 space-x-2">
+                  <span>By {ann.author}</span>
+                  <span>•</span>
+                  <span>{ann.date}</span>
+                </div>
+
+                {/* AI Summarizer Button */}
+                <AISummarizer title={ann.title} content={ann.content} />
+              </div>
             </div>
           </div>
         ))}
@@ -109,30 +139,46 @@ export default function PublicAnnouncementsPage() {
       {/* Modal Dialog Reader */}
       {selectedAnn && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="max-w-xl w-full glass-panel bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl space-y-4 shadow-2xl animate-in zoom-in-95">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-              <span className="badge-mapua px-2.5 py-0.5 rounded text-[10px] font-mono font-bold">
-                {selectedAnn.category}
-              </span>
-              <button
-                onClick={() => setSelectedAnn(null)}
-                className="text-slate-400 hover:text-slate-900 dark:hover:text-white"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+          <div className="max-w-xl w-full glass-panel bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 max-h-[90vh] overflow-y-auto">
+            {selectedAnn.imageUrl && (
+              <div className="h-56 w-full bg-slate-900 relative">
+                <img src={selectedAnn.imageUrl} alt={selectedAnn.title} className="w-full h-full object-cover" />
+                <button
+                  onClick={() => setSelectedAnn(null)}
+                  className="absolute top-3 right-3 p-1.5 rounded-full bg-black/60 text-white hover:bg-black"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            )}
 
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-              {selectedAnn.title}
-            </h2>
+            <div className="p-6 space-y-4">
+              {!selectedAnn.imageUrl && (
+                <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
+                  <span className="badge-mapua px-2.5 py-0.5 rounded text-[10px] font-mono font-bold">
+                    {selectedAnn.category}
+                  </span>
+                  <button
+                    onClick={() => setSelectedAnn(null)}
+                    className="text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
 
-            <div className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed space-y-2 whitespace-pre-line">
-              {selectedAnn.content}
-            </div>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                {selectedAnn.title}
+              </h2>
 
-            <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
-              <span>Published by {selectedAnn.author}</span>
-              <span>{selectedAnn.date}</span>
+              <div className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed space-y-2 whitespace-pre-line">
+                {selectedAnn.content}
+              </div>
+
+              <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
+                <span>Published by {selectedAnn.author}</span>
+                <AISummarizer title={selectedAnn.title} content={selectedAnn.content} />
+              </div>
             </div>
           </div>
         </div>

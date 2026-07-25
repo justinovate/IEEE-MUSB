@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useData } from '@/components/data-provider';
 import { Bell, Plus, Pin, Edit3, Trash2, Search, X, Upload, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { AnnouncementData } from '@/data/announcements';
@@ -112,13 +113,23 @@ export default function AdminAnnouncementsPage() {
           </p>
         </div>
 
-        <button
-          onClick={openCreateModal}
-          className="px-4 py-2.5 rounded-xl text-xs font-bold btn-ieee-primary flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Post New Announcement</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/admin/announcements/ai"
+            className="px-4 py-2.5 rounded-xl text-xs font-bold bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/40 flex items-center gap-2 transition-colors"
+          >
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            <span>AI Caption Generator</span>
+          </Link>
+
+          <button
+            onClick={openCreateModal}
+            className="px-4 py-2.5 rounded-xl text-xs font-bold btn-ieee-primary flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Post New Announcement</span>
+          </button>
+        </div>
       </div>
 
       {/* Search Bar */}

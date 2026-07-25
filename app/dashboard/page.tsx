@@ -17,6 +17,7 @@ import {
   MapPin,
   Camera,
   Upload,
+  Sparkles,
 } from 'lucide-react';
 
 export default function MemberDashboard() {
@@ -134,6 +135,14 @@ export default function MemberDashboard() {
           </div>
 
           <div className="flex items-center gap-3">
+            <Link
+              href="/dashboard/recommendations"
+              className="px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 hover:bg-amber-500/20 transition-colors flex items-center gap-1.5"
+            >
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <span>AI Activity Matcher</span>
+            </Link>
+
             <label className="px-3.5 py-2 rounded-xl text-xs font-semibold glass-panel border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
               <Upload className="w-3.5 h-3.5 text-[#00629B] dark:text-blue-400" />
               <span>Change Avatar</span>

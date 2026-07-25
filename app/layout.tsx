@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { DataProvider } from '@/components/data-provider';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
+import { IEEEBranchChatbot } from '@/components/ai/ieee-chatbot';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -51,6 +52,7 @@ export default function RootLayout({
             <Header />
             <main className="flex-1 w-full">{children}</main>
             <Footer />
+            <IEEEBranchChatbot />
           </DataProvider>
         </ThemeProvider>
       </body>
