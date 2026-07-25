@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { IEEELogo } from '@/components/ieee-logo';
 import { useData } from '@/components/data-provider';
+import { MembershipChecker } from '@/components/membership-checker';
 import {
   Bell,
   Calendar,
@@ -17,6 +18,7 @@ import {
   Search,
   ExternalLink,
   CheckCircle2,
+  ShieldCheck,
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -117,6 +119,11 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
+      </section>
+
+      {/* Public Student Membership Status Verification Widget */}
+      <section className="space-y-4">
+        <MembershipChecker />
       </section>
 
       {/* Featured Event Live Countdown */}
