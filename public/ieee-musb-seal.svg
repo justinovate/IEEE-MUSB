@@ -1,0 +1,64 @@
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- Outer Double Rings -->
+  <circle cx="250" cy="250" r="235" stroke="currentColor" stroke-width="12" />
+  <circle cx="250" cy="250" r="215" stroke="currentColor" stroke-width="5" />
+  <circle cx="250" cy="250" r="145" stroke="currentColor" stroke-width="5" />
+
+  <!-- Side Diamonds ◆ -->
+  <polygon points="40,240 48,225 56,240 48,255" fill="currentColor" />
+  <polygon points="460,240 468,225 476,240 468,255" fill="currentColor" />
+
+  <!-- Stars ★ in Outer Ring -->
+  <!-- Top Star -->
+  <polygon points="250,55 256,73 275,73 260,84 266,102 250,91 234,102 240,84 225,73 244,73" fill="currentColor" />
+  <!-- Upper Left Star -->
+  <polygon points="110,130 116,148 135,148 120,159 126,177 110,166 94,177 100,159 85,148 104,148" fill="currentColor" />
+  <!-- Upper Right Star -->
+  <polygon points="390,130 396,148 415,148 400,159 406,177 390,166 374,177 380,159 365,148 384,148" fill="currentColor" />
+  <!-- Lower Left Star -->
+  <polygon points="75,275 81,293 100,293 85,304 91,322 75,311 59,322 65,304 50,293 69,293" fill="currentColor" />
+  <!-- Lower Right Star -->
+  <polygon points="425,275 431,293 450,293 435,304 441,322 425,311 409,322 415,304 400,293 419,293" fill="currentColor" />
+
+  <!-- Circular Text Arc Top: "Institute of Electrical and Electronics Engineers, Inc." -->
+  <path id="sealTextTop" d="M 45,250 A 205,205 0 1,1 455,250" fill="none" />
+  <text font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="21.5" fill="currentColor" letter-spacing="1.2">
+    <textPath href="#sealTextTop" startOffset="50%" text-anchor="middle">
+      Institute of Electrical and Electronics Engineers, Inc.
+    </textPath>
+  </text>
+
+  <!-- Circular Text Arc Bottom: "Mapúa University Student Branch" -->
+  <path id="sealTextBottom" d="M 445,250 A 195,195 0 0,1 55,250" fill="none" />
+  <text font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="22" fill="currentColor" letter-spacing="1.5">
+    <textPath href="#sealTextBottom" startOffset="50%" text-anchor="middle">
+      Mapúa University Student Branch
+    </textPath>
+  </text>
+
+  <!-- Inner Center Graphic: Person Holding Flag + Lightning Slash -->
+  <g transform="translate(30, -5)">
+    <!-- Flag / Banner Border -->
+    <path d="M 150,115 L 265,120 L 265,225 L 210,205 L 150,230 Z" fill="none" stroke="currentColor" stroke-width="4.5" />
+    <path d="M 150,115 L 265,120 L 265,225 L 210,205 L 150,230 Z" fill="currentColor" opacity="0.08" />
+
+    <!-- Person Silhouette -->
+    <!-- Head -->
+    <circle cx="190" cy="148" r="14" fill="currentColor" />
+    <!-- Arm raising lightning bolt -->
+    <path d="M 175,175 C 160,150 185,125 210,115 L 225,125 C 205,140 185,160 190,185 Z" fill="currentColor" />
+    <!-- Torso and lower body -->
+    <path d="M 140,240 C 130,200 160,165 195,160 C 220,180 225,220 200,250 Z" fill="currentColor" />
+
+    <!-- Lightning Bolt Slash (Crossing from center up out through outer ring top-right) -->
+    <polygon points="345,15 220,160 250,155 125,275 190,165 165,170" fill="currentColor" />
+  </g>
+
+  <!-- Center Text: IEEE & 2002 -->
+  <text x="250" y="390" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="58" fill="currentColor" letter-spacing="4">
+    IEEE
+  </text>
+  <text x="250" y="435" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="40" fill="currentColor" letter-spacing="4">
+    2002
+  </text>
+</svg>
